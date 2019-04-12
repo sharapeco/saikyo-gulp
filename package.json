@@ -1,5 +1,5 @@
 {
-  "name": "Saikyo Gulp",
+  "name": "saikyo-gulp",
   "version": "1.0.0",
   "description": "The strongest gulpfile.js I thought",
   "main": "index.js",
