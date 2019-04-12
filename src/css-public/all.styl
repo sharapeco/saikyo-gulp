@@ -1,0 +1,12 @@
+// all.styl
+
+background-webp($basename, $revision = "") {
+	.webp & {
+		$file = $basename + ".webp" + $revision;
+		background-image: url($file);
+	}
+	.no-webp & {
+		$file = $basename + ".jpg" + $revision;
+		background-image: url($file);
+	}
+}
