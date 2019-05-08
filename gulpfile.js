@@ -15,6 +15,14 @@ const [pcss, watch_pcss] = makeCssTask({
 	outputName: "public",
 });
 
+// 追加 CSS (ほかのプリプロセッサも使える)
+const [ocss, watch_ocss] = makeCssTask({
+	lang: "scss",
+	src: "src/css-optional",
+	dest: `dist/assets-${appVersion}/css`,
+	outputName: "optional",
+});
+
 // 公開ページ JS
 const [pjs, watch_pjs] = makeJsTask({
 	src: "src/js-public",

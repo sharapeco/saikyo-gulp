@@ -1,0 +1,7 @@
+@mixin largeText {
+	font-size: 500%;
+}
+
+h1 {
+	@include largeText;
+}
