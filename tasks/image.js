@@ -21,7 +21,7 @@ function makeImageTask(options) {
 		speed: 1,
 	}, options);
 
-	const normalBuildTask = function() {
+	const minify_image = function() {
 		return src(`${opt.src}/**/*.{${opt.ext}}`, {base: opt.src})
 		.pipe(changed(opt.dest))
 		.pipe(imagemin([
@@ -33,20 +33,20 @@ function makeImageTask(options) {
 		.pipe(dest(opt.dest));
 	};
 
-	const webpBuildTask = function() {
+	const make_webp = function() {
 		return src(`${opt.src}/**/*.jpg`, {base: opt.src})
 		.pipe(changed(opt.dest, {extension: ".webp"}))
 		.pipe(webp())
 		.pipe(dest(opt.dest));
 	};
 
-	const buildTask = /\bjpg\b/.test(opt.ext) ? parallel(normalBuildTask, webpBuildTask) : normalBuildTask;
+	const build_image = /\bjpg\b/.test(opt.ext) ? parallel(minify_image, make_webp) : minify_image;
 
-	const watchTask = function() {
-		return watch([`${opt.src}/**/*.{${opt.ext}}`], buildTask);
+	const watch_image = function() {
+		return watch([`${opt.src}/**/*.{${opt.ext}}`], build_image);
 	};
 
-	return [buildTask, watchTask];
+	return [build_image, watch_image];
 }
 
 module.exports = {

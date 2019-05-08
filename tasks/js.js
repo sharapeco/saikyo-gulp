@@ -22,10 +22,10 @@ function makeJsTask(options) {
 	}, options);
 
 	const sourceListFile = path.resolve(opt.src, opt.srcList);
-	const sourceList = getSourceList(sourceListFile);
 
-	const buildTask = function() {
-		return src(sourceList.map(file => path.resolve(opt.src, file)), {
+	const build_js = function() {
+		const sourceList = getSourceList(sourceListFile).map(file => path.resolve(opt.src, file));
+		return src(sourceList, {
 			base: opt.src,
 		})
 		.pipe(plumber({
@@ -42,11 +42,11 @@ function makeJsTask(options) {
 		.pipe(dest(opt.dest));
 	}
 
-	const watchTask = function() {
-		return watch([sourceListFile, `${opt.src}/**/*.js`], buildTask);
+	const watch_js = function() {
+		return watch([sourceListFile, `${opt.src}/**/*.js`], build_js);
 	}
 
-	return [buildTask, watchTask];
+	return [build_js, watch_js];
 }
 
 function getSourceList(sourceListFile) {
@@ -55,7 +55,7 @@ function getSourceList(sourceListFile) {
 	const lines = content.replace(/\r\n?/g, "\n").split("\n");
 	return lines
 		.map(line => line.trim())
-		.filter(line => line !== "");
+		.filter(line => line.charAt(0) !== "#" && line !== "");
 }
 
 module.exports = {
