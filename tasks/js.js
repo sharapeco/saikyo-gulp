@@ -1,5 +1,6 @@
 // Gulp utilities
 const {src, dest, watch} = require("gulp");
+const babel = require("gulp-babel");
 const concat = require("gulp-concat");
 const rename = require("gulp-rename");
 const sourcemaps = require("gulp-sourcemaps");
@@ -19,13 +20,23 @@ function makeJsTask(options) {
 		dest: "dist",
 		outputName: "public",
 		srcList: "package.txt",
+		minify: true,
+		babelPresetOptions: {
+			targets: {
+				edge: "17",
+				firefox: "60",
+				chrome: "67",
+				safari: "11.1",
+				ie: "11",
+			},
+		},
 	}, options);
 
 	const sourceListFile = path.resolve(opt.src, opt.srcList);
 
 	const build_js = function() {
 		const sourceList = getSourceList(sourceListFile).map(file => path.resolve(opt.src, file));
-		return src(sourceList, {
+		let task = src(sourceList, {
 			base: opt.src,
 		})
 		.pipe(plumber({
@@ -36,8 +47,17 @@ function makeJsTask(options) {
 		}))
 		.pipe(sourcemaps.init())
 		.pipe(concat(`${opt.outputName}.js`))
-		.pipe(uglify())
-		.pipe(rename(`${opt.outputName}.min.js`))
+		.pipe(babel({
+			presets: [["@babel/preset-env", opt.babelPresetOptions]],
+		}))
+
+		if (opt.minify) {
+			task = task
+			.pipe(uglify())
+			.pipe(rename(`${opt.outputName}.min.js`));
+		}
+
+		return task
 		.pipe(sourcemaps.write("./"))
 		.pipe(dest(opt.dest));
 	}
