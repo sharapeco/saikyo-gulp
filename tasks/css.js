@@ -37,6 +37,7 @@ function makeCssTask(options) {
 		src: "src/css",
 		dest: "dist",
 		outputName: "public",
+		minify: true,
 	}, options);
 
 	if (!processors[opt.lang]) {
@@ -46,7 +47,7 @@ function makeCssTask(options) {
 	const processor = require(processorDesc.package);
 
 	const build_css = function() {
-		return src(`${opt.src}/all.${processorDesc.ext}`, {base: opt.src})
+		let task = src(`${opt.src}/all.${processorDesc.ext}`, {base: opt.src})
 		.pipe(plumber({
 			errorHandler: error => notifier.notify({
 				title: `${opt.lang} Error`,
@@ -54,8 +55,13 @@ function makeCssTask(options) {
 			}, () => console.log(error.toString()))
 		}))
 		.pipe(processor())
-		.pipe(groupCSSMediaQueries())
-		.pipe(cssmin())
+		.pipe(groupCSSMediaQueries());
+
+		if (opt.minify) {
+			task = task.pipe(cssmin());
+		}
+
+		return task
 		.pipe(rename({basename: opt.outputName}))
 		.pipe(dest(opt.dest));
 	};
