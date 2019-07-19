@@ -38,6 +38,7 @@ function makeCssTask(options) {
 		dest: "dist",
 		outputName: "public",
 		minify: true,
+		options: {},
 	}, options);
 
 	if (!processors[opt.lang]) {
@@ -54,7 +55,7 @@ function makeCssTask(options) {
 				message: error.toString().PIPE(head(3)),
 			}, () => console.log(error.toString()))
 		}))
-		.pipe(processor())
+		.pipe(processor(opt.options))
 		.pipe(groupCSSMediaQueries());
 
 		if (opt.minify) {
