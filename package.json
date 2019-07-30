@@ -25,6 +25,7 @@
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-stylus": "^2.7.0",
+    "gulp-svgmin": "^2.2.0",
     "gulp-uglify-es": "^1.0.4",
     "gulp-webp": "^4.0.1",
     "imagemin-pngquant": "^7.0.0"
