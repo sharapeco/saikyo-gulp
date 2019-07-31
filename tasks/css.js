@@ -10,7 +10,7 @@ const notifier = require('node-notifier');
 // Stylus CSS
 const stylus = require("gulp-stylus");
 const groupCSSMediaQueries = require("gulp-group-css-media-queries");
-const cssmin = require("gulp-cssmin");
+const cssnano = require("gulp-cssnano");
 
 const processors = {
 	stylus: {
@@ -59,7 +59,7 @@ function makeCssTask(options) {
 		.pipe(groupCSSMediaQueries());
 
 		if (opt.minify) {
-			task = task.pipe(cssmin());
+			task = task.pipe(cssnano());
 		}
 
 		return task
