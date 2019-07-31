@@ -8,26 +8,22 @@ const {makeImageTask} = require("./tasks/image");
 // Destination
 const destDir = "dist";
 
-// 公開ページ CSS
+// CSS
 const [pcss, watch_pcss] = makeCssTask({
 	src: "src/css-public",
 	dest: `${destDir}/css`,
 	outputName: "public",
+	// lang: styl (default), scss, less
+	// minify: true (default), false
 });
 
-// 追加 CSS (ほかのプリプロセッサも使える)
-const [ocss, watch_ocss] = makeCssTask({
-	lang: "scss",
-	src: "src/css-optional",
-	dest: `${destDir}/css`,
-	outputName: "optional",
-});
-
-// 公開ページ JS
+// JavaScript
 const [pjs, watch_pjs] = makeJsTask({
 	src: "src/js-public",
 	dest: `${destDir}/js`,
 	outputName: "public",
+	// minify: true (default), false
+	// babelPresetOptions: {...}
 });
 const watch_js = function() {
 	return watch([
@@ -44,10 +40,26 @@ const [webpjs, watch_webpjs] = makeJsTask({
 	outputName: "webp",
 });
 
-// 公開ページ画像
+// Images
 const [pimg, watch_pimg] = makeImageTask({
 	src: "src/img",
 	dest: `${destDir}/img`,
+	// jpegq: 0 to 1
+	// pngq: [min, max] (0 to 1)
+	// ext: "png,jpg,gif,svg"
+	// speed: 1
+});
+
+// Icon font (for compatibility)
+const [icon, watch_icon] = makeIconfontTask({
+	src: "src/icons",
+	dest: `${destDir}/fonts`,
+	fontName: "icon",
+	css: {
+		dest: `${destDir}/css`,
+		className: "icon",
+		fontPath: "../fonts",
+	},
 });
 
 // Expose
@@ -56,5 +68,6 @@ module.exports = expose({
 	pcss,
 	pjs,
 	webpjs,
+	icon,
 	dev: series(parallel(pcss, pimg, pjs, webpjs), parallel(watch_pcss, watch_pimg, watch_js)),
 });
