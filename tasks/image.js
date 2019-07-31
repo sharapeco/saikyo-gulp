@@ -9,27 +9,36 @@ const notifier = require('node-notifier');
 
 // imagemin + pngquant, svgmin
 const imagemin = require("gulp-imagemin");
+const mozjpeg = require("imagemin-mozjpeg");
 const pngquant = require("imagemin-pngquant");
 const webp = require("gulp-webp");
-const svgmin = require("gulp-svgmin");
 
 function makeImageTask(options) {
 	const opt = Object.assign({}, {
 		src: "src/img",
 		dest: "dist/img",
-		quality: [0.5, 0.9],
+		jpegq: 0.65,
+		pngq: [0.5, 0.9],
 		ext: "png,jpg,gif,svg",
 		speed: 1,
 	}, options);
 
 	const minify_image = function() {
-		const extWithoutSvg = opt.ext.replace(/^svg|,svg\b/ig, "");
-		return src(`${opt.src}/**/*.{${extWithoutSvg}}`, {base: opt.src})
+		return src(`${opt.src}/**/*.{${opt.ext}}`, {base: opt.src})
 		.pipe(changed(opt.dest))
 		.pipe(imagemin([
+			imagemin.gifsicle(),
+			mozjpeg({
+				quality: 100 * opt.jpegq,
+			}),
 			pngquant({
-				quality: opt.quality,
+				quality: opt.pngq,
 				speed: opt.speed,
+			}),
+			imagemin.svgo({
+				plugins: [
+					{removeViewBox: false},
+				],
 			}),
 		]))
 		.pipe(dest(opt.dest));
@@ -42,19 +51,9 @@ function makeImageTask(options) {
 		.pipe(dest(opt.dest));
 	};
 
-	const make_svg = function() {
-		return src(`${opt.src}/**/*.svg`, {base: opt.src})
-		.pipe(changed(opt.dest))
-		.pipe(svgmin())
-		.pipe(dest(opt.dest));
-	};
-
 	const tasks = [minify_image];
 	if (/\bjpg\b/i.test(opt.ext)) {
 		tasks.push(make_webp);
-	}
-	if (/\bsvg\b/i.test(opt.ext)) {
-		tasks.push(make_svg);
 	}
 
 	const build_image = parallel.apply(null, tasks);
