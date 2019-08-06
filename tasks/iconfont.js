@@ -17,12 +17,10 @@ function makeIconfontTask(options) {
 		fontHeight: 1024,
 		prependUnicode: true,
 		startCodepoint: 0xF001,
-		css: Object.assign({}, {
-			dest: "dist",
-			template: "tasks/iconfont/template.{html,css,styl,less}",
-			className: "icon",
-			fontPath: "",
-		}, options.css || {}),
+		cssDest: "dist",
+		template: "tasks/iconfont/template.{html,css,styl,less}",
+		className: "icon",
+		fontPath: "",
 	}, options);
 
 	const build_iconfont = function() {
@@ -45,15 +43,15 @@ function makeIconfontTask(options) {
 		.on("glyphs", (glyphs, options) => {
 			console.log(`glyphs = ${glyphs.length}`);
 			// CSS
-			src(opt.css.template)
+			src(opt.template)
 			.pipe(consolidate("lodash", {
 				fontName: opt.fontName,
-				fontPath: opt.css.fontPath,
-				className: opt.css.className,
+				fontPath: opt.fontPath,
+				className: opt.className,
 				glyphs,
 			}))
 			.pipe(rename({ basename: opt.fontName }))
-			.pipe(dest(opt.css.dest));
+			.pipe(dest(opt.cssDest));
 		})
 		.pipe(dest(opt.dest));
 	};

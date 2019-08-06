@@ -1,13 +1,16 @@
+@<%= className %>-font-path: "<%= fontPath %>";
+
 @font-face {
 	font-family: "<%= fontName %>";
-	src: url("<%= fontPath %><%= fontName %>.woff") format("woff"),
-		url("<%= fontPath %><%= fontName %>.woff2") format("woff2");
+	src: url("@{<%= className %>-font-path}<%= fontName %>.woff") format("woff"),
+		url("@{<%= className %>-font-path}<%= fontName %>.woff2") format("woff2");
 	font-weight: normal;
 	font-style: normal;
 }
 
-.<%= className %>:before {
+.apply-<%= className %>() {
 	display: inline-block;
+	speak: none;
 	font-family: "<%= fontName %>";
 	font-style: normal;
 	font-weight: normal;
@@ -18,6 +21,20 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+.<%= className %>:before {
+	.apply-<%= className %>;
+}
+
+.<%= className %>-lg {
+	font-size: 1.333em;
+	line-height: .75em;
+	vertical-align: -15%;
+}
+.<%= className %>-2x { font-size: 200%; }
+.<%= className %>-3x { font-size: 300%; }
+.<%= className %>-4x { font-size: 400%; }
+.<%= className %>-5x { font-size: 500%; }
 
 <% _.each(glyphs, glyph => { %>@<%= className %>-<%= glyph.name %>: "<%= glyph.unicode.map(u => '\\' + u.charCodeAt(0).toString(16).toUpperCase()).join('') %>";
 <% }); %>

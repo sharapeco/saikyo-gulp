@@ -55,11 +55,9 @@ const [icon, watch_icon] = makeIconfontTask({
 	src: "src/icons",
 	dest: `${destDir}/fonts`,
 	fontName: "icon",
-	css: {
-		dest: `${destDir}/css`,
-		className: "icon",
-		fontPath: "../fonts",
-	},
+	cssDest: `src/css/icons`,
+	className: "icon",
+	fontPath: "../fonts/",
 });
 
 // Expose
