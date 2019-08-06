@@ -7,7 +7,7 @@ const sourcemaps = require("gulp-sourcemaps");
 const path = require("path");
 
 // Error handling
-const {head} = require("./utils");
+const {head, clean} = require("./utils");
 const plumber = require('gulp-plumber');
 const notifier = require('node-notifier');
 
@@ -42,7 +42,7 @@ function makeJsTask(options) {
 		.pipe(plumber({
 			errorHandler: error => notifier.notify({
 				title: "Concat & uglify しっぱいしたブイ",
-				message: error.toString().PIPE(head(3)),
+				message: error.toString().PIPE(clean()).PIPE(head(3)),
 			}, () => console.log(error.toString()))
 		}))
 		.pipe(sourcemaps.init())

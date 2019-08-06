@@ -3,7 +3,7 @@ const {src, dest, watch} = require("gulp");
 const rename = require("gulp-rename");
 
 // Error handling
-const {head} = require("./utils");
+const {head, clean} = require("./utils");
 const plumber = require('gulp-plumber');
 const notifier = require('node-notifier');
 
@@ -53,7 +53,7 @@ function makeCssTask(options) {
 		.pipe(plumber({
 			errorHandler: error => notifier.notify({
 				title: `${opt.lang} Error`,
-				message: error.toString().PIPE(head(3)),
+				message: error.toString().PIPE(clean()).PIPE(head(3)),
 			}, () => console.log(error.toString()))
 		}))
 		.pipe(processor(opt.options))
