@@ -6,10 +6,12 @@ const path = require("path");
 const browserify = require("browserify");
 const babelify = require("babelify");
 const through = require("through2");
+const source = require("vinyl-source-stream");
+const buffer = require("vinyl-buffer");
 
 // Error handling
 const {head, clean} = require("./utils");
-const notifier = require('node-notifier');
+const notifier = require("node-notifier");
 
 // JavaScript
 const uglify = require("gulp-uglify-es").default;
@@ -24,34 +26,31 @@ function makeBrowserifyTask(options) {
 		babelPresetOptions: {
 			targets: babelDefaultTargets,
 		},
+		browserifyOptions: {},
 	}, options);
 
-	const srcDir = path.resolve(opt.src, '..');
+	const srcDir = path.resolve(opt.src, "..");
 
 	const build_jsb = function() {
-		let task = src(opt.src, {base: srcDir})
-		.pipe(sourcemaps.init())
-		.pipe(rename(`${opt.outputName}.js`))
-		.pipe(through.obj((file, encode, callback) => {
-			browserify(file.path)
-			.transform(babelify, {
-				presets: [["@babel/preset-env", opt.babelPresetOptions]],
-			})
-			.bundle((err, res) => {
-				if (err) {
-					console.log(err.message);
-					console.log(err.stack);
+		let task = browserify(opt.src, Object.assign({}, {debug: true}, opt.browserifyOptions))
+		.transform(babelify, {
+			presets: [["@babel/preset-env", opt.babelPresetOptions]],
+			sourceMaps: true,
+		})
+		.bundle()
+		.on("error", err => {
+			console.log(err.message);
+			console.log(err.stack);
 
-					notifier.notify({
-						title: "Browserify しっぱい!!",
-						message: error.toString().PIPE(clean()).PIPE(head(3)),
-					});
-					return;
-				}
-				file.contents = res;
-				callback(null, file);
+			notifier.notify({
+				title: "Browserify しっぱい!!",
+				message: error.toString().PIPE(clean()).PIPE(head(3)),
 			});
-		}));
+		})
+		.pipe(source("bundle.js"))
+		.pipe(buffer())
+		.pipe(rename(`${opt.outputName}.js`))
+		.pipe(sourcemaps.init({loadMaps: true}));
 
 		if (opt.minify) {
 			task = task
