@@ -13,6 +13,7 @@ const notifier = require('node-notifier');
 
 // JavaScript
 const uglify = require("gulp-uglify-es").default;
+const babelDefaultTargets = require("./babel-default-targets");
 
 function makeBrowserifyTask(options) {
 	const opt = Object.assign({}, {
@@ -21,13 +22,7 @@ function makeBrowserifyTask(options) {
 		outputName: "app",
 		minify: true,
 		babelPresetOptions: {
-			targets: {
-				edge: "17",
-				firefox: "60",
-				chrome: "67",
-				safari: "11.1",
-				ie: "11",
-			},
+			targets: babelDefaultTargets,
 		},
 	}, options);
 
