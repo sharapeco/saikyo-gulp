@@ -2,7 +2,6 @@
 const {src, dest, watch} = require("gulp");
 const rename = require("gulp-rename");
 const sourcemaps = require("gulp-sourcemaps");
-const path = require("path");
 const browserify = require("browserify");
 const babelify = require("babelify");
 const through = require("through2");
@@ -28,8 +27,6 @@ function makeBrowserifyTask(options) {
 		},
 		browserifyOptions: {},
 	}, options);
-
-	const srcDir = path.resolve(opt.src, "..");
 
 	const build_jsb = function() {
 		let task = browserify(opt.src, Object.assign({}, {debug: true}, opt.browserifyOptions))
@@ -63,6 +60,11 @@ function makeBrowserifyTask(options) {
 		.pipe(dest(opt.dest));
 	}
 
+	const srcDir = (() => {
+		const srcPath = opt.src.split("/");
+		srcPath.pop();
+		return srcPath.join("/");
+	})();
 	const watch_jsb = function() {
 		return watch([`${srcDir}/**/*.js`], build_jsb);
 	}
