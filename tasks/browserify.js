@@ -35,14 +35,16 @@ function makeBrowserifyTask(options) {
 			sourceMaps: true,
 		})
 		.bundle()
-		.on("error", err => {
+		.on("error", function(err) {
 			console.log(err.message);
 			console.log(err.stack);
 
 			notifier.notify({
 				title: "Browserify しっぱい!!",
-				message: error.toString().PIPE(clean()).PIPE(head(3)),
+				message: err.toString().PIPE(clean()).PIPE(head(3)),
 			});
+
+			this.emit("end");
 		})
 		.pipe(source("bundle.js"))
 		.pipe(buffer())
