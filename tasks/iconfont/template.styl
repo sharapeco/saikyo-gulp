@@ -22,6 +22,12 @@ apply-<%= className %>() {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.<%= className %> {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 1;
+}
+
 .<%= className %>:before {
 	apply-<%= className %>();
 }
