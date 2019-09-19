@@ -1,6 +1,7 @@
 // Gulp
 const {src, dest, watch, parallel} = require("gulp");
 const changed = require("gulp-changed");
+const rename = require("gulp-rename");
 
 // Error handling
 const {head} = require("./utils");
@@ -11,7 +12,8 @@ const notifier = require('node-notifier');
 const imagemin = require("gulp-imagemin");
 const mozjpeg = require("imagemin-mozjpeg");
 const pngquant = require("imagemin-pngquant");
-const webp = require("gulp-webp");
+const optipng = require("imagemin-optipng");
+const webp = require("imagemin-webp");
 
 function makeImageTask(options) {
 	const opt = Object.assign({}, {
@@ -19,6 +21,7 @@ function makeImageTask(options) {
 		dest: "dist/img",
 		jpegq: 0.65,
 		pngq: [0.5, 0.9],
+		webpq: 0.8,
 		ext: "png,jpg,gif,svg",
 		speed: 1,
 	}, options);
@@ -35,6 +38,12 @@ function makeImageTask(options) {
 				quality: opt.pngq,
 				speed: opt.speed,
 			}),
+			optipng({
+				// optimizationLevel: 3,
+				// bitDepthReduction: true,
+				// colorTypeReduction: true,
+				// paletteReduction: true,
+			}),
 			imagemin.svgo({
 				plugins: [
 					{removeViewBox: false},
@@ -45,14 +54,19 @@ function makeImageTask(options) {
 	};
 
 	const make_webp = function() {
-		return src(`${opt.src}/**/*.jpg`, {base: opt.src})
+		return src(`${opt.src}/**/*.{jpg,png}`, {base: opt.src})
 		.pipe(changed(opt.dest, {extension: ".webp"}))
-		.pipe(webp())
+		.pipe(imagemin([
+			webp({
+				quality: 100 * opt.webpq,
+			})
+		]))
+		.pipe(rename({ extname: ".webp" }))
 		.pipe(dest(opt.dest));
 	};
 
 	const tasks = [minify_image];
-	if (/\bjpg\b/i.test(opt.ext)) {
+	if (/\b(?:jpg|png)\b/i.test(opt.ext)) {
 		tasks.push(make_webp);
 	}
 
