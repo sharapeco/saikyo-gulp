@@ -27,7 +27,7 @@ function makeImageTask(options) {
 	}, options);
 
 	const minify_image = function() {
-		return src(`${opt.src}/**/*.{${opt.ext}}`, {base: opt.src})
+		return src(`${opt.src}/**/*.{${opt.ext}}`, { base: opt.src })
 		.pipe(changed(opt.dest))
 		.pipe(imagemin([
 			imagemin.gifsicle(),
@@ -46,7 +46,7 @@ function makeImageTask(options) {
 			}),
 			imagemin.svgo({
 				plugins: [
-					{removeViewBox: false},
+					{ removeViewBox: false },
 				],
 			}),
 		]))
@@ -54,11 +54,12 @@ function makeImageTask(options) {
 	};
 
 	const make_webp = function() {
-		return src(`${opt.src}/**/*.{jpg,png}`, {base: opt.src})
+		return src(`${opt.src}/**/*.{jpg,png}`, { base: opt.src })
 		.pipe(changed(opt.dest, {extension: ".webp"}))
 		.pipe(imagemin([
 			webp({
 				quality: 100 * opt.webpq,
+				metadata: ["icc"],
 			})
 		]))
 		.pipe(rename({ extname: ".webp" }))
