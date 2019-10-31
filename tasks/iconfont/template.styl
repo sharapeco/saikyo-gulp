@@ -2,14 +2,15 @@ $<%= className %>-font-path = "<%= fontPath %>";
 
 @font-face {
 	font-family: "<%= fontName %>";
-	src: url("{$<%= className %>-font-path}<%= fontName %>.woff") format("woff"),
-		url("{$<%= className %>-font-path}<%= fontName %>.woff2") format("woff2");
+	src: url($<%= className %>-font-path + "<%= fontName %>.woff") format("woff"),
+		url($<%= className %>-font-path + "<%= fontName %>.woff2") format("woff2");
 	font-weight: normal;
 	font-style: normal;
 }
 
-apply-<%= className %>() {
+apply-<%= className %>($glyph = "not set") {
 	display: inline-block;
+	vertical-align: middle;
 	speak: none;
 	font-family: "<%= fontName %>";
 	font-style: normal;
@@ -20,6 +21,10 @@ apply-<%= className %>() {
 	text-decoration: inherit;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	unless $glyph == "not set" {
+		content: $glyph;
+	}
 }
 
 .<%= className %> {
