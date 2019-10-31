@@ -21,7 +21,7 @@ Saikyo-gulp can:
 
 ## Install
 
-Copy package.json, package.json and tasks directory to your project.
+Copy package.json, gulpfile.js and tasks directory to your project.
 
 And run
 
