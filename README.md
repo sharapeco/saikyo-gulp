@@ -23,17 +23,7 @@ Saikyo-gulp can:
 
 Copy package.json, gulpfile.js and tasks directory to your project.
 
-And run
-
-```
-npm install
-```
-
-Or
-
-```
-yarn install
-```
+And run `npm install` or `yarn install`.
 
 ## Build Settings
 
@@ -75,39 +65,19 @@ const [stylus, watch_stylus] = makeCssTask({
 	src: "src/stylus",
 	dest: "dest",
 	outputName: "styles",
-	lang: "sytl",
-});
-
-// Less
-const [less, watch_less] = makeCssTask({
-	src: "src/less",
-	dest: "dest",
-	outputName: "styles",
-	lang: "less",
-});
-
-// SCSS
-const [scss, watch_scss] = makeCssTask({
-	src: "src/scss",
-	dest: "dest",
-	outputName: "public",
-	lang: "scss",
 });
 ```
 
-Turn off minifying:
+#### Options
 
-```JavaScript
-const {makeCssTask} = require("./tasks/css");
-
-const [stylus, watch_stylus] = makeCssTask({
-	src: "src/stylus",
-	dest: "dest",
-	outputName: "styles",
-	lang: "sytl",
-	minify: false,
-});
-```
+| Name | Description |
+| ---- | ----------- |
+| src  | Source files directory. Compiling `${src}/all.(styl|less|scss)` |
+| dest | Output directory |
+| outputName | Output file name |
+| lang | CSS preprocessor name. "styl", "less", "scss" can possible. "styl" is default. |
+| minify | True is default |
+| header | Add header to output. eg. `/**! Project Name v1.2.3 (C) Foobar Inc. */` |
 
 If you use JavaScript-style escaping in Less, use javascriptEnabled option:
 
@@ -144,7 +114,8 @@ const [js, watch_js] = makeJsTask({
 	src: "src/js",
 	dest: "dest",
 	outputName: "small-script",
-	// minify: true (default)
+	// minify: true, // default
+	// header: '/**! Project Name v1.2.3 (C) Foobar Inc. */',
 });
 ```
 
@@ -160,6 +131,7 @@ const [js, watch_js] = makeBrowserifyTask({
 	dest: "dest",
 	outputName: "middle-script",
 	// minify: true (default)
+	// header: '/**! Project Name v1.2.3 (C) Foobar Inc. */',
 	// babelPresetOptions: { targets: babelDefaultTargets } (default)
 	// browserifyOptions: {} (default)
 });

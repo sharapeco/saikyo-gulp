@@ -4,6 +4,7 @@ const babel = require("gulp-babel");
 const concat = require("gulp-concat");
 const rename = require("gulp-rename");
 const sourcemaps = require("gulp-sourcemaps");
+const header = require("gulp-header");
 const path = require("path");
 
 // Error handling
@@ -46,9 +47,17 @@ function makeJsTask(options) {
 			presets: [["@babel/preset-env", opt.babelPresetOptions]],
 		}))
 
+		if (opt.header) {
+			task = task.pipe(header(opt.header + "\n"));
+		}
+
 		if (opt.minify) {
 			task = task
-			.pipe(uglify())
+			.pipe(uglify({
+				output: {
+					comments: /^[*]?!/
+				}
+			}))
 			.pipe(rename(`${opt.outputName}.min.js`));
 		}
 

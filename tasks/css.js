@@ -1,6 +1,7 @@
 // Gulp
 const {src, dest, watch} = require("gulp");
 const rename = require("gulp-rename");
+const header = require("gulp-header");
 
 // Error handling
 const {head, clean} = require("./utils");
@@ -63,6 +64,10 @@ function makeCssTask(options) {
 			task = task.pipe(postcss([
 				cssnano(),
 			]));
+		}
+
+		if (opt.header) {
+			task = task.pipe(header(opt.header + "\n"));
 		}
 
 		return task

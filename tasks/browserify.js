@@ -2,6 +2,7 @@
 const {src, dest, watch} = require("gulp");
 const rename = require("gulp-rename");
 const sourcemaps = require("gulp-sourcemaps");
+const header = require("gulp-header");
 const browserify = require("browserify");
 const babelify = require("babelify");
 const through = require("through2");
@@ -51,9 +52,17 @@ function makeBrowserifyTask(options) {
 		.pipe(rename(`${opt.outputName}.js`))
 		.pipe(sourcemaps.init({loadMaps: true}));
 
+		if (opt.header) {
+			task = task.pipe(header(opt.header + "\n"));
+		}
+
 		if (opt.minify) {
 			task = task
-			.pipe(uglify())
+			.pipe(uglify({
+				output: {
+					comments: /^[*]?!/
+				}
+			}))
 			.pipe(rename(`${opt.outputName}.min.js`));
 		}
 
