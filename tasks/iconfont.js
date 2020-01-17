@@ -29,6 +29,9 @@ function makeIconfontTask(options) {
 			imagemin.svgo({
 				plugins: [
 					{removeViewBox: false},
+					{convertPathData: {
+						noSpaceAfterFlags: false
+					}},
 				],
 			}),
 		]))
