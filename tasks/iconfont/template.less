@@ -2,8 +2,8 @@
 
 @font-face {
 	font-family: "<%= fontName %>";
-	src: url("@{<%= className %>-font-path}<%= fontName %>.woff") format("woff"),
-		url("@{<%= className %>-font-path}<%= fontName %>.woff2") format("woff2");
+	src: url("@{<%= className %>-font-path}<%= fontName %>.woff?v=<%= buildTimestamp %>") format("woff"),
+		url("@{<%= className %>-font-path}<%= fontName %>.woff2?v=<%= buildTimestamp %>") format("woff2");
 	font-weight: normal;
 	font-style: normal;
 }

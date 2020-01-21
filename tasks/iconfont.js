@@ -9,6 +9,8 @@ const iconfont = require("gulp-iconfont");
 const consolidate = require("gulp-consolidate");
 
 function makeIconfontTask(options) {
+	const now = Date.now();
+
 	const opt = Object.assign({}, {
 		src: "src/icons",
 		dest: "dist",
@@ -52,6 +54,7 @@ function makeIconfontTask(options) {
 				fontPath: opt.fontPath,
 				className: opt.className,
 				glyphs,
+				buildTimestamp: now,
 			}))
 			.pipe(rename({ basename: opt.fontName }))
 			.pipe(dest(opt.cssDest));
