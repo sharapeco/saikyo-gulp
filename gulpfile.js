@@ -1,64 +1,57 @@
 // Import
-const {watch, series, parallel} = require("gulp");
-const {expose} = require("./tasks/utils");
-const {makeCssTask} = require("./tasks/css");
-const {makeJsTask} = require("./tasks/js");
-const {makeImageTask} = require("./tasks/image");
+const { watch, series, parallel } = require('gulp')
+const { expose } = require('./tasks/utils')
+const { makeCssTask } = require('./tasks/css')
+const { makeJsTask } = require('./tasks/js')
+const { makeImageTask } = require('./tasks/image')
 
 // Destination
-const destDir = "dist";
+const destDir = 'dist'
 
 // CSS
 const [pcss, watch_pcss] = makeCssTask({
-	src: "src/css-public",
+	src: 'src/css-public',
 	dest: `${destDir}/css`,
-	outputName: "public",
+	outputName: 'public'
 	// lang: styl (default), scss, less
 	// minify: true (default), false
-});
+})
 
 // JavaScript
 const [pjs, watch_pjs] = makeJsTask({
-	src: "src/js-public",
+	src: 'src/js-public',
 	dest: `${destDir}/js`,
-	outputName: "public",
+	outputName: 'public'
 	// minify: true (default), false
-	// babelPresetOptions: {...}
-});
-const watch_js = function() {
-	return watch([
-		"src/js-public/package.txt",
-		"src/js-public/**/*.js",
-		"src/js-lib/**/*.js",
-	], parallel(pjs, webpjs));
-};
+	// babelPresetOptions: { ... }
+})
 
 // WebP 対応かどうか調べる JS
 const [webpjs, watch_webpjs] = makeJsTask({
-	src: "src/js-lib/webp",
+	src: 'src/js-lib/webp',
 	dest: `${destDir}/js`,
-	outputName: "webp",
-});
+	outputName: 'webp'
+})
 
 // Images
 const [pimg, watch_pimg] = makeImageTask({
-	src: "src/img",
+	src: 'src/img',
 	dest: `${destDir}/img`,
 	// jpegq: 0 to 1
 	// pngq: [min, max] (0 to 1)
-	// ext: "png,jpg,gif,svg"
+	// ext: 'png,jpg,gif,svg'
 	// speed: 1
-});
+})
 
 // Icon font (for compatibility)
 const [icon, watch_icon] = makeIconfontTask({
-	src: "src/icons",
+	src: 'src/icons',
 	dest: `${destDir}/fonts`,
-	fontName: "icon",
+	fontName: 'icon',
 	cssDest: `src/css/icons`,
-	className: "icon",
-	fontPath: "../fonts/",
-});
+	className: 'icon',
+	fontPath: '../fonts/'
+})
 
 // Expose
 module.exports = expose({
@@ -67,5 +60,8 @@ module.exports = expose({
 	pjs,
 	webpjs,
 	icon,
-	dev: series(parallel(pcss, pimg, pjs, webpjs), parallel(watch_pcss, watch_pimg, watch_js)),
-});
+	dev: series(
+		parallel(pcss, pimg, pjs, webpjs),
+		parallel(watch_pcss, watch_pimg, watch_pjs)
+	)
+})
