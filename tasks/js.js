@@ -13,7 +13,7 @@ const plumber = require('gulp-plumber');
 const notifier = require('node-notifier');
 
 // JavaScript
-const uglify = require("gulp-terser-js");
+const uglify = require("gulp-terser");
 const babelDefaultTargets = require("./babel-default-targets");
 
 function makeJsTask(options) {
