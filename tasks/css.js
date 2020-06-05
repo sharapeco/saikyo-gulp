@@ -62,7 +62,12 @@ function makeCssTask (options) {
 
 		if (opt.minify) {
 			task = task.pipe(postcss([
-				cssnano()
+				cssnano({
+					preset: [
+						'default',
+						{ minifyFontValues: { removeQuotes: false } }
+					]
+				})
 			]))
 		}
 
