@@ -36,7 +36,7 @@ const [webpjs, watch_webpjs] = makeJsTask({
 // Images
 const [pimg, watch_pimg] = makeImageTask({
 	src: 'src/img',
-	dest: `${destDir}/img`,
+	dest: `${destDir}/img`
 	// jpegq: 0 to 1
 	// pngq: [min, max] (0 to 1)
 	// ext: 'png,jpg,gif,svg'
@@ -48,7 +48,7 @@ const [icon, watch_icon] = makeIconfontTask({
 	src: 'src/icons',
 	dest: `${destDir}/fonts`,
 	fontName: 'icon',
-	cssDest: `src/css/icons`,
+	cssDest: 'src/css/icons',
 	className: 'icon',
 	fontPath: '../fonts/'
 })
