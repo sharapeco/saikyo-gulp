@@ -87,7 +87,7 @@ If you use JavaScript-style escaping in Less, use javascriptEnabled option:
 ```JavaScript
 const lessOptions = {
 	javascriptEnabled: true,
-};
+}
 
 const [less, watch_less] = makeCssTask({
 	src: 'src/less',
@@ -108,7 +108,7 @@ bar.js
 foobar.js
 ```
 
-The file contains *.js relative path names in the directory;
+The file contains *.js relative path names in the directory:
 
 ```JavaScript
 const mkJsTask = require('./tasks/js')
