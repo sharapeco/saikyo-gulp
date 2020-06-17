@@ -13,6 +13,7 @@ const stylus = require('gulp-stylus')
 const groupCSSMediaQueries = require('gulp-group-css-media-queries')
 const postcss = require('gulp-postcss')
 const cssnano = require('cssnano')
+const sourcemaps = require('gulp-sourcemaps')
 
 const processors = {
 	stylus: {
@@ -57,6 +58,7 @@ function makeCssTask (options) {
 					message: error.toString().PIPE(clean()).PIPE(head(3))
 				}, () => console.log(error.toString()))
 			}))
+			.pipe(sourcemaps.init())
 			.pipe(processor(opt.options))
 			.pipe(groupCSSMediaQueries())
 
@@ -77,6 +79,7 @@ function makeCssTask (options) {
 
 		return task
 			.pipe(rename({ basename: opt.outputName }))
+			.pipe(sourcemaps.write('./'))
 			.pipe(dest(opt.dest))
 	}
 
