@@ -42,7 +42,7 @@
     "imagemin-optipng": "^7.1.0",
     "imagemin-pngquant": "^8.0.0",
     "imagemin-webp": "^5.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "through2": "^3.0.1",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
