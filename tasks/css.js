@@ -77,10 +77,18 @@ function makeCssTask (options) {
 			task = task.pipe(header(opt.header + '\n'))
 		}
 
-		return task
+		task = task
 			.pipe(rename({ basename: opt.outputName }))
 			.pipe(sourcemaps.write('./'))
-			.pipe(dest(opt.dest))
+
+		if (Array.isArray(opt.dest)) {
+			opt.dest.forEach(d => {
+				task = task.pipe(dest(d))
+			})
+		} else {
+			task = taks.pipe(dest(opt.dest))
+		}
+		return task
 	}
 
 	const watch_css = function () {
