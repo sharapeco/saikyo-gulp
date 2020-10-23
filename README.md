@@ -152,3 +152,18 @@ const [js, watch_js] = makeBrowserifyTask({
 	// browserifyOptions: {} (default)
 })
 ```
+
+### Simply Copy Files
+
+```JavaScript
+const makeCopyTask = require('./tasks/copy')
+
+const [assets, watch_assets] = makeCopyTask({
+	src: 'src/assets',
+	dest: [
+		'dest',
+		'dest-another-version'
+	]
+})
+```
+
