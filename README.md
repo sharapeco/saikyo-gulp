@@ -4,6 +4,7 @@ The strongest gulpfile.js I thought for small websites or applications.
 
 Saikyo-gulp can:
 
+- **Compile Pug**:
 - **Compile CSS**:
 	- Preprocessors: Stylus, Less, Sass, SCSS
 	- Minify
@@ -57,6 +58,17 @@ gulp taskName
 ```
 
 ## Examples
+
+### Build HTML files from Pug
+
+```JavaScript
+const makePugTask = require('./tasks/pug')
+
+const [doc, watch_doc] = makePugTask({
+	src: ['src/docs/*.pug', '!src/docs/_*.pug'],
+	dest: 'dest'
+})
+```
 
 ### Use CSS Preprocessors
 
