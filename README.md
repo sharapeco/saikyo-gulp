@@ -4,7 +4,6 @@ The strongest gulpfile.js I thought for small websites or applications.
 
 Saikyo-gulp can:
 
-- **Compile Pug**:
 - **Compile CSS**:
 	- Preprocessors: Stylus, Less, Sass, SCSS
 	- Minify
@@ -19,6 +18,8 @@ Saikyo-gulp can:
 - **Make icon fonts**:
 	- Input: SVGs
 	- Output: woff, woff2, CSS, CSS preprocessor templates
+- **Compile Pug**
+- **Simply copy files**
 
 ## Install
 
