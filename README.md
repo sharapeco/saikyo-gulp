@@ -1,6 +1,6 @@
 # Saikyo-gulp
 
-The strongest gulpfile.js I thought for small websites or applications.
+The strongest gulpfile.js I thought for small websites, documents or applications.
 
 Saikyo-gulp can:
 
