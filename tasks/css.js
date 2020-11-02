@@ -86,7 +86,7 @@ function makeCssTask (options) {
 				task = task.pipe(dest(d))
 			})
 		} else {
-			task = taks.pipe(dest(opt.dest))
+			task = task.pipe(dest(opt.dest))
 		}
 		return task
 	}
